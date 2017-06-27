@@ -1,0 +1,212 @@
+\documentclass[oneside, english, reqno]{amsart}
+\usepackage[top=1.15in, bottom=1.15in, left=1.6in, right=1.6in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\pagestyle{plain}
+\usepackage{amsmath, amsthm, amssymb, amsfonts, mathrsfs}
+\usepackage{multirow, colortbl, graphicx, hyperref, wrapfig}
+\usepackage{tikz, empheq}
+\usepackage{lscape}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Page numbering
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[C]{\sffamily\fontsize{10pt}{50pt}\selectfont\thepage} % except the center
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+\pagestyle{plain}
+
+% Mathematical headings
+\newtheoremstyle{plain}{20pt}{15pt}{\slshape}{0pt}{\bfseries}{}{4mm}{}
+\newtheoremstyle{definition}{20pt}{20pt}{\slshape}{0pt}{\bfseries}{}{4mm}{}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\theoremstyle{plain}
+\newtheorem{lemma}[thm]{Lemma}
+\theoremstyle{plain}
+\newtheorem{theorem}[thm]{Theorem}
+\theoremstyle{plain}
+\newtheorem{corollary}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[thm]{Definition}
+\theoremstyle{definition}
+\newtheorem{example}[thm]{Example}
+\theoremstyle{definition}
+\newtheorem{conjecture}[thm]{Conjecture}
+
+\usepackage{babel}
+
+% Create a table
+\usepackage{tabularx}
+\usepackage{booktabs}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+
+% Settings for fbox
+\setlength\fboxsep{5pt}
+\setlength\fboxrule{1pt}
+
+% Add vertical spaces after paragraphs
+\setlength{\parskip}{2pt}%
+\setlength{\parindent}{15pt}%
+
+\makeatletter
+% Add vertical spaces around equations
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{10pt}
+  \setlength\belowdisplayskip{10pt}
+  \setlength\abovedisplayshortskip{10pt}
+  \setlength\belowdisplayshortskip{10pt}
+}
+% Add a new line after subsection title
+\def\subsection{\@startsection{subsection}{3}%
+  \z@{2\linespacing}{.3\linespacing}%
+  {\normalfont}}
+% Add a new line after subsubsection title
+\def\subsubsection{\@startsection{subsubsection}{3}%
+  \z@{2\linespacing}{.3\linespacing}%
+  {\normalfont}}
+\makeatother
+
+% Link an equation to a particular section
+\numberwithin{equation}{section}
+
+% Link a figure to a particular section
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+
+% Create an equation number for align* if desired
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+% Circled numbers
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1.25pt] (char) {#1};}}
+
+\allowdisplaybreaks[1]
+
+\begin{document}
+
+\section{NURBS in 1D}
+\label{sec:1}
+\noindent For convenience, we let,
+\begin{align*}
+	N_{A}^{(k)} = w_{A}\,\frac{d^{k}N_{A}}{d\xi^{k}},\,\,\,\,\,\Sigma^{(k)} = \sum_{A}N_{A}^{(k)}
+\end{align*} \vspace{3pt}
+
+\noindent 0th derivative.
+\begin{align*}
+	R_{A}^{(0)} = \frac{1}{\Sigma^{(0)}}\Bigl[N_{A}^{(0)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 1st derivative.
+\begin{align*}
+	R_{A}^{(1)} = \frac{1}{\Sigma^{(0)}}\Bigl[N_{A}^{(1)} - \Sigma^{(1)}R_{A}^{(0)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 2nd derivative.
+\begin{align*}
+	R_{A}^{(2)} = \frac{1}{\Sigma^{(0)}}\Bigl[N_{A}^{(2)} - \Sigma^{(2)}R_{A}^{(0)} - 2\,\Sigma^{(1)}R_{A}^{(1)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 3rd derivative.
+\begin{align*}
+	R_{A}^{(3)} = \frac{1}{\Sigma^{(0)}}\Bigl[N_{A}^{(3)} - \Sigma^{(3)}R_{A}^{(0)} - 3\,\Sigma^{(2)}R_{A}^{(1)} - 3\,\Sigma^{(1)}R_{A}^{(2)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent \(k\)-th derivative.
+\begin{align*}
+	R_{A}^{(k)} = \frac{1}{\Sigma^{(0)}}\Biggl[N_{A}^{(k)} - \sum_{j = 0}^{k - 1}\,\binom{k}{j}\,\Sigma^{(k - j)}R_{A}^{(j)}\Biggr]
+\end{align*}
+
+
+
+\newpage
+\section{NURBS in 2D}
+\label{sec:2}
+\noindent For convenience, we let,
+\begin{align*}
+	N_{A}^{(k_{1}k_{2})} = w_{A}\,\frac{\partial^{k}N_{A}}{\partial\xi^{k_{1}}\partial\eta^{k_{2}}},\,\,\,\,\,\Sigma^{(k_{1}k_{2})} = \sum_{A}N_{A}^{(k_{1}k_{2})}
+\end{align*} \vspace{3pt}
+
+\noindent 0th derivative.
+\begin{align*}
+	R_{A}^{(00)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(00)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 1st derivatives.
+\begin{align*}
+	&R_{A}^{(10)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(10)} - \Sigma^{(10)}R_{A}^{(00)}\Bigr] \\[6pt]
+	&R_{A}^{(01)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(01)} - \Sigma^{(01)}R_{A}^{(00)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 2nd derivatives.
+\begin{align*}
+	&R_{A}^{(20)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(20)} - \Sigma^{(20)}R_{A}^{(00)} - 2\,\Sigma^{(10)}R_{A}^{(10)}\Bigr] \\[6pt]
+	&R_{A}^{(11)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(11)} - \Sigma^{(11)}R_{A}^{(00)} - \Sigma^{(01)}R_{A}^{(10)} - \Sigma^{(10)}R_{A}^{(01)}\Bigr] \\[6pt]
+	&R_{A}^{(02)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(02)} - \Sigma^{(02)}R_{A}^{(00)} - 2\,\Sigma^{(01)}R_{A}^{(01)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 3rd derivatives.
+\begin{align*}
+	&R_{A}^{(30)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(30)} - \Sigma^{(30)}R_{A}^{(00)} - 3\,\Sigma^{(20)}R_{A}^{(10)} - 3\,\Sigma^{(10)}R_{A}^{(20)}\Bigr] \\[6pt]
+	&R_{A}^{(21)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(21)} - \Sigma^{(21)}R_{A}^{(00)} - 2\,\Sigma^{(11)}R_{A}^{(10)} - \Sigma^{(01)}R_{A}^{(20)} - \Sigma^{(20)}R_{A}^{(01)} - 2\,\Sigma^{(10)}R_{A}^{(11)} \Bigr] \\[6pt]
+	&R_{A}^{(12)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(12)} - \Sigma^{(12)}R_{A}^{(00)} - \Sigma^{(02)}R_{A}^{(10)} - 2\,\Sigma^{(11)}R_{A}^{(01)} - 2\,\Sigma^{(01)}R_{A}^{(11)} - \Sigma^{(10)}R_{A}^{(02)}\Bigr] \\[6pt]
+	&R_{A}^{(03)} = \frac{1}{\Sigma^{(00)}}\Bigl[N_{A}^{(03)} - \Sigma^{(03)}R_{A}^{(00)} - 3\,\Sigma^{(02)}R_{A}^{(01)} - 3\,\Sigma^{(01)}R_{A}^{(02)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent \(k\)-th derivatives.
+\begin{align*}
+	R_{A}^{(k_{1}k_{2})} = \frac{1}{\Sigma^{(00)}}\Biggl[N_{A}^{(k_{1}k_{2})} - \sum_{j_{2} = 0}^{J_{2}}\,\sum_{j_{1} = 0}^{J_{1}}\,\binom{k_{1}}{j_{1}}\binom{k_{2}}{j_{2}}\,\Sigma^{(k_{1} - j_{1})(k_{2} - j_{2})}R_{A}^{(j_{1}j_{2})}\Biggr]
+\end{align*}
+\begin{align*}
+	&J_{2} = \min(k - 1,\,k_{2}) \\[6pt]
+	&J_{1} = \min(k - 1 - j_{2},\,k_{1})
+\end{align*}
+
+
+
+\newpage
+\section{NURBS in 3D}
+\label{sec:3}
+\noindent For convenience, we let,
+\begin{align*}
+	N_{A}^{(k_{1}k_{2}k_{3})} = w_{A}\,\frac{\partial^{k}N_{A}}{\partial\xi^{k_{1}}\partial\eta^{k_{2}}\partial\zeta^{k_{3}}},\,\,\,\,\,\Sigma^{(k_{1}k_{2}k_{3})} = \sum_{A}N_{A}^{(k_{1}k_{2}k_{3})}
+\end{align*} \vspace{3pt}
+
+\noindent 0th derivative.
+\begin{align*}
+	R_{A}^{(000)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(000)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 1st derivatives.
+\begin{align*}
+	&R_{A}^{(100)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(100)} - \Sigma^{(100)}R_{A}^{(000)}\Bigr] \\[6pt]
+	&R_{A}^{(010)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(010)} - \Sigma^{(010)}R_{A}^{(000)}\Bigr] \\[6pt]
+	&R_{A}^{(001)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(001)} - \Sigma^{(001)}R_{A}^{(000)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent 2nd derivatives.
+\begin{align*}
+	&R_{A}^{(200)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(200)} - \Sigma^{(200)}R_{A}^{(000)} - 2\,\Sigma^{(100)}R_{A}^{(100)}\Bigr] \\[6pt]
+	&R_{A}^{(110)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(110)} - \Sigma^{(110)}R_{A}^{(000)} - \Sigma^{(010)}R_{A}^{(100)} - \Sigma^{(100)}R_{A}^{(010)}\Bigr] \\[6pt]
+	&R_{A}^{(101)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(101)} - \Sigma^{(101)}R_{A}^{(000)} - \Sigma^{(001)}R_{A}^{(100)} - \Sigma^{(100)}R_{A}^{(001)}\Bigr] \\[6pt]
+	&R_{A}^{(020)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(020)} - \Sigma^{(020)}R_{A}^{(000)} - 2\,\Sigma^{(010)}R_{A}^{(010)}\Bigr] \\[6pt]
+	&R_{A}^{(011)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(011)} - \Sigma^{(011)}R_{A}^{(000)} - \,\Sigma^{(001)}R_{A}^{(010)} - \,\Sigma^{(010)}R_{A}^{(001)}\Bigr] \\[6pt]
+	&R_{A}^{(002)} = \frac{1}{\Sigma^{(000)}}\Bigl[N_{A}^{(002)} - \Sigma^{(002)}R_{A}^{(000)} - 2\,\Sigma^{(001)}R_{A}^{(001)}\Bigr]
+\end{align*} \vspace{3pt}
+
+\noindent \(k\)-th derivatives.
+\begin{align*}
+	R_{A}^{(k_{1}k_{2}k_{3})} = \frac{1}{\Sigma^{(000)}}\Biggl[N_{A}^{(k_{1}k_{2}k_{3})} - \sum_{j_{3} = 0}^{J_{3}}\,\sum_{j_{2} = 0}^{J_{2}}\,\sum_{j_{1} = 0}^{J_{1}}\,\binom{k_{1}}{j_{1}}\binom{k_{2}}{j_{2}}\binom{k_{3}}{j_{3}}\,\Sigma^{(k_{1} - j_{1})(k_{2} - j_{2})(k_{3} - j_{3})}R_{A}^{(j_{1}j_{2}j_{3})}\Biggr]
+\end{align*}
+\begin{align*}
+	&J_{3} = \min(k - 1,\,k_{3}) \\[6pt]
+	&J_{2} = \min(k - 1 - j_{3},\,k_{2}) \\[6pt]
+	&J_{1} = \min(k - 1 - j_{3} - j_{2},\,k_{1})
+\end{align*}
+
+\end{document}
